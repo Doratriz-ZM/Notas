@@ -28,30 +28,33 @@ class Estudiante:
             promedio = self.calcular_promedio(materia)
             print(f"Materia: {materia} | Notas: {notas} | Promedio: {promedio:.2f}")
 
-# Solicitar datos del estudiante
-nombre = input("Nombre del estudiante: ")
-apellido = input("Apellido del estudiante: ")
-numero = input("Número de estudiante: ")
-curso = input("Curso: ")
+# Registro de estudiantes
+registro_estudiantes = []
 
-estudiante = Estudiante(nombre, apellido, numero, curso)
+def agregar_estudiante():
+    nombre = input("Nombre del estudiante: ")
+    apellido = input("Apellido del estudiante: ")
+    numero = input("Número de estudiante: ")
+    curso = input("Curso: ")
+    estudiante = Estudiante(nombre, apellido, numero, curso)
+    registro_estudiantes.append(estudiante)
+    print("Estudiante agregado correctamente.")
 
-
-# Pedir notas para cada materia
-total_periodos = 4
-for materia in estudiante.materias.keys():
-    print(f"\nIngresando notas para {materia}")
-    for i in range(1, total_periodos + 1):
-        while True:
-            try:
-                nota = float(input(f"Ingrese la nota del periodo {i}: "))
-                if 0 <= nota <= 100:
-                    estudiante.agregar_nota(materia, nota)
-                    break
-                else:
-                    print("La nota debe estar entre 0 y 100. Inténtalo de nuevo.")
-            except ValueError:
-                print("Entrada inválida. Ingresa un número válido.")
-
-# Mostrar el registro completo
-estudiante.mostrar_registro()
+def seleccionar_estudiante():
+    if not registro_estudiantes:
+        print("No hay estudiantes registrados.")
+        return None
+    
+    print("\nLista de estudiantes:")
+    for i, est in enumerate(registro_estudiantes):
+        print(f"{i + 1}. {est.nombre} {est.apellido} ({est.numero})")
+    
+    while True:
+        try:
+            opcion = int(input("Selecciona un estudiante por número: "))
+            if 1 <= opcion <= len(registro_estudiantes):
+                return registro_estudiantes[opcion - 1]
+            else:
+                print("Número fuera de rango.")
+        except ValueError:
+            print("Entrada inválida. Ingresa un número válido.")
